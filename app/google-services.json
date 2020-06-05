@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "195587443140",
+    "firebase_url": "https://quiz-6569b.firebaseio.com",
+    "project_id": "quiz-6569b",
+    "storage_bucket": "quiz-6569b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195587443140:android:de4165dbb796fac949bc91",
+        "android_client_info": {
+          "package_name": "com.thinkdevs.bibleQuiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195587443140-i8sptdgvpq69gt6eh1ra87tt0gg9ecsk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMXOl3uIORa1e4KpN36Kth0ZWEw0N8_Vk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "195587443140-i8sptdgvpq69gt6eh1ra87tt0gg9ecsk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

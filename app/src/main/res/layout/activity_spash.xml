@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        tools:context=".splash.SpashActivity">
+
+        <ImageView
+            android:id="@+id/main_img"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="70dp"
+            android:src="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:id="@+id/welcome_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="WELCOME to Bible Quiz"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_img" />
+
+        <TextView
+            android:id="@+id/descriptionText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space15"
+            android:gravity="center"
+            android:lineSpacingExtra="3dp"
+            android:padding="8dp"
+            android:text="Looking at the way some people live, they ought to obtain eternal fire insurance soon."
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcome_text" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/getstarted"
+            android:background="@drawable/bgbutton"
+            android:layout_width="245dp"
+            android:layout_height="45dp"
+            android:text="GET STARTED"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionText"
+            android:layout_marginTop="70dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
