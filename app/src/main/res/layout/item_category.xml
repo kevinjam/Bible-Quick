@@ -31,7 +31,7 @@
                     android:textColor="@android:color/white"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:background="@drawable/gree_circle"/>
+                    android:background="@drawable/green_circle"/>
 
 
                 <LinearLayout

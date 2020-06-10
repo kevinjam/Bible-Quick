@@ -1,11 +1,13 @@
 package com.thinkdevs.bibleQuiz
 
 import android.animation.Animator
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +20,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.DataSnapshot
@@ -29,6 +30,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.thinkdevs.bibleQuiz.model.Question
 import com.thinkdevs.bibleQuiz.utility.loadAds
+import org.w3c.dom.Text
 
 
 class QuestionFragment : Fragment() {
@@ -56,6 +58,7 @@ class QuestionFragment : Fragment() {
     private var matchedQuestionPosition: Int? = null
 
     private lateinit var mAdView: AdView
+    private lateinit var dialog: Dialog
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -245,10 +248,12 @@ class QuestionFragment : Fragment() {
                             if (position == questionList!!.size) {
                                 println("Bundle is " + score)
                                 println("Bundle is " + questionList!!.count())
-                                var bundle = Bundle()
-                                bundle.putInt("score", score)
-                                bundle.putInt("total", questionList!!.size)
-                                findNavController().navigate(R.id.scoreFragment, bundle)
+//                                var bundle = Bundle()
+//                                bundle.putInt("score", score)
+//                                bundle.putInt("total", questionList!!.size)
+//                                findNavController().navigate(R.id.scoreFragment, bundle)
+
+                                finishDialog(score, questionList!!.count())
 
                                 return@setOnClickListener
                             }
@@ -323,6 +328,19 @@ class QuestionFragment : Fragment() {
 
         private var FILE_NAME: String = "QUIZZER"
         private var KEY_NAME: String = "QUESTIONS"
+    }
+
+    private fun finishDialog(score: Int, questionList: Int) {
+        dialog = Dialog(activity!!)
+        dialog.setContentView(R.layout.finish_dialog)
+
+        dialog.findViewById<TextView>(R.id.score).text = "$score on this quiz!"
+        dialog.findViewById<TextView>(R.id.total).text = "You answered out of $questionList correct"
+
+
+
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.show()
     }
 
 }
