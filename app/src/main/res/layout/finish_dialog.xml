@@ -9,10 +9,10 @@
  >
 
     <ImageView
+        android:id="@+id/btn_share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_close"
-        android:background="@drawable/orange_circle"
+        android:src="@drawable/ic_share"
         android:layout_margin="@dimen/space20"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -47,6 +47,7 @@
              android:orientation="vertical">
 
              <TextView
+                 android:id="@+id/btn_close"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:layout_marginLeft="@dimen/space20"
@@ -90,10 +91,11 @@
 
 
              <androidx.appcompat.widget.AppCompatButton
+                 android:id="@+id/play_again"
                  android:layout_width="200dp"
                  android:layout_height="wrap_content"
                  android:layout_marginTop="@dimen/space20"
-                 android:text="Yessssss"
+                 android:text="Continue"
                  android:textColor="@android:color/white"
                  android:layout_gravity="center"
                  android:background="@drawable/bgbutton"/>

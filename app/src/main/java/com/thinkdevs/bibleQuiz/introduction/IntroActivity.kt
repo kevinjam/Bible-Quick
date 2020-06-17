@@ -42,7 +42,8 @@ class IntroActivity : AppCompatActivity() {
         mList.add(
             ScreenItem(
                 "Be Smart",
-                "Knowing a great deal is not the same as being smart; intelligence is not information alone but also judgment, the manner in which information is collected and used",
+                "Knowing a great deal is not the same as being smart;" +
+                        " \n intelligence is not information alone but also judgment, the manner in which information is collected and used",
                 R.drawable.ic_smart
             )
         )

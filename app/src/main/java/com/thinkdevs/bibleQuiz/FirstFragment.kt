@@ -5,20 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.widget.AppCompatButton
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.thinkdevs.bibleQuiz.utility.LoadingDialog
+import com.thinkdevs.bibleQuiz.utility.shareWithFriend
 import java.util.*
 
 
 class FirstFragment : Fragment() {
 
     private lateinit var mAdView: AdView
+    private var dialog: LoadingDialog?= null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,7 +30,7 @@ class FirstFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        dialog = LoadingDialog(activity!!)
         loadAds(view)
 
         view.findViewById<ImageView>(R.id.start_btn).setOnClickListener {
@@ -39,12 +40,12 @@ class FirstFragment : Fragment() {
         view.findViewById<ImageView>(R.id.bookmarks_btn).setOnClickListener {
             findNavController().navigate(R.id.bookmarkFragment)
         }
-        view.findViewById<ImageView>(R.id.add_question).setOnClickListener {
-           Toast.makeText(activity, "Coming soon", Toast.LENGTH_LONG).show()
+        view.findViewById<ImageView>(R.id.share).setOnClickListener {
+            shareWithFriend(activity!!.applicationContext)
         }
 
         view.findViewById<ImageView>(R.id.about_us).setOnClickListener {
-            Toast.makeText(activity, "Coming soon", Toast.LENGTH_LONG).show()
+            dialog!!.startAboutDialog()
         }
 
         view.findViewById<TextView>(R.id.hello).text = getGreetingMessage()
@@ -58,7 +59,7 @@ class FirstFragment : Fragment() {
         mAdView.loadAd(request)
     }
 
-    fun getGreetingMessage():String{
+    fun getGreetingMessage(): String {
         val c = Calendar.getInstance()
         return when (c.get(Calendar.HOUR_OF_DAY)) {
             in 0..11 -> "Good Morning"

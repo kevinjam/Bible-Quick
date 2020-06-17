@@ -8,12 +8,16 @@ import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -30,7 +34,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.thinkdevs.bibleQuiz.model.Question
 import com.thinkdevs.bibleQuiz.utility.loadAds
-import org.w3c.dom.Text
 
 
 class QuestionFragment : Fragment() {
@@ -59,6 +62,8 @@ class QuestionFragment : Fragment() {
 
     private lateinit var mAdView: AdView
     private lateinit var dialog: Dialog
+    private lateinit var timer: TextView
+    private var countDown: CountDownTimer? = null
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -72,12 +77,13 @@ class QuestionFragment : Fragment() {
         editor = preference?.edit()
         gson = Gson()
         category = arguments?.getString("category")
-        setNo = arguments?.getInt("setNo")
+        setNo = arguments?.getInt("setNo",1)
 
         mAdView = view.findViewById(R.id.adView)
         loadAds(view, mAdView)
 
         question = view.findViewById(R.id.questions)
+        timer = view.findViewById(R.id.counting_txt)
         indicator = view.findViewById(R.id.no_indicator)
         bookmarks = view.findViewById(R.id.bookmark_action)
         optionsContainer = view.findViewById(R.id.option_container)
@@ -107,17 +113,19 @@ class QuestionFragment : Fragment() {
     }
 
     private fun getShareContents() {
-        val body = questionList?.get(position)?.question +
-                questionList?.get(position)?.optionA + "\n"
-        questionList?.get(position)?.optionB + "\n"
-        questionList?.get(position)?.optionC + "\n"
-        questionList?.get(position)?.optionD
-        var shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "text/plain"
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Christian Quiz Challenge")
-        shareIntent.putExtra(Intent.EXTRA_TEXT, body)
-        shareIntent = Intent.createChooser(shareIntent, "Share via")
-        startActivity(shareIntent)
+        val body = questionList?.get(position)?.question +" \n "
+        val message = "https://play.google.com/store/apps/details?id=${activity!!.packageName}"
+        val share = Intent(Intent.ACTION_SEND)
+        share.type = "text/plain"
+        share.putExtra(Intent.EXTRA_TITLE, "Christian Quiz Challenge")
+        share.putExtra(
+            Intent.EXTRA_TEXT, body + " \n Answer that Question By Downloading Bible Quiz \n" + " "
+                    + Uri.parse(message)
+        )
+
+
+        startActivity(Intent.createChooser(share, "Share via"))
+
     }
 
     private fun playAnnim(view: View, value: Int, data: String) {
@@ -203,6 +211,9 @@ class QuestionFragment : Fragment() {
             }
 
         }
+
+        val handler = Handler()
+        handler.postDelayed({ changeQuestion() }, 2000)
     }
 
     private fun enableOption(enable: Boolean) {
@@ -220,11 +231,14 @@ class QuestionFragment : Fragment() {
     }
 
     private fun getQuestions() {
+        startTimer()
+        var values = 10
+        timer.text = values.toString()
         reference
             .child("SETS")
             .child(category!!)
             .child("questions")
-//            .orderByChild("setNo").equalTo(setNo.toString())
+            .orderByChild("setNo").equalTo(setNo.toString())
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     println("++++++Data is here " + dataSnapshot.value.toString())
@@ -241,30 +255,7 @@ class QuestionFragment : Fragment() {
                         }
                         playAnnim(question, 0, questionList!![position].question!!)
                         next.setOnClickListener {
-                            next.isEnabled = false
-                            next.alpha = 0.7F
-                            position++
-                            enableOption(true)
-                            if (position == questionList!!.size) {
-                                println("Bundle is " + score)
-                                println("Bundle is " + questionList!!.count())
-//                                var bundle = Bundle()
-//                                bundle.putInt("score", score)
-//                                bundle.putInt("total", questionList!!.size)
-//                                findNavController().navigate(R.id.scoreFragment, bundle)
-
-                                finishDialog(score, questionList!!.count())
-
-                                return@setOnClickListener
-                            }
-                            count = 0
-                            questionList?.get(position)?.question?.let { it1 ->
-                                playAnnim(
-                                    question,
-                                    0,
-                                    it1
-                                )
-                            }
+                            if (nextQuestion()) return@setOnClickListener
                         }
 
                     } else {
@@ -283,6 +274,32 @@ class QuestionFragment : Fragment() {
 
 
             })
+    }
+
+    private fun nextQuestion(): Boolean {
+        next.isEnabled = false
+        next.alpha = 0.7F
+        position++
+        enableOption(true)
+        if (position == questionList!!.size) {
+            println("Bundle is " + score)
+            println("Bundle is " + questionList!!.count())
+
+            finishDialog(score, questionList!!.count())
+
+            return true
+        }
+
+        count = 0
+        questionList?.get(position)?.question?.let { it1 ->
+            playAnnim(
+                question,
+                0,
+                it1
+            )
+        }
+//        countDown!!.cancel()
+        return false
     }
 
     override fun onPause() {
@@ -333,14 +350,48 @@ class QuestionFragment : Fragment() {
     private fun finishDialog(score: Int, questionList: Int) {
         dialog = Dialog(activity!!)
         dialog.setContentView(R.layout.finish_dialog)
+        dialog.findViewById<TextView>(R.id.score).text = "You have Answer $score Correctly"
+        dialog.findViewById<TextView>(R.id.total).text = "Out of $questionList Questions"
+        dialog.findViewById<TextView>(R.id.btn_share).setOnClickListener {
+            dialog.dismiss()
+            getShareContents()
 
-        dialog.findViewById<TextView>(R.id.score).text = "$score on this quiz!"
-        dialog.findViewById<TextView>(R.id.total).text = "You answered out of $questionList correct"
-
-
+        }
+        dialog.findViewById<AppCompatButton>(R.id.play_again).setOnClickListener {
+            dialog.dismiss()
+            //go back()
+        }
 
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
     }
+
+    fun startTimer() {
+        countDown = object : CountDownTimer(12000, 1000) {
+            override fun onFinish() {
+                //go to the next Question
+                changeQuestion()
+            }
+
+            override fun onTick(millisUntilFinished: Long) {
+                timer.text = (millisUntilFinished / 1000).toString()
+            }
+
+        }
+        countDown!!.start()
+    }
+
+
+    private fun changeQuestion() {
+//        var values = 10
+//        timer.text = values.toString()
+//        startTimer()
+//        if (nextQuestion()){
+//            println("Change Quesion")
+//        }
+//        println("Change Quesion--------")
+
+    }
+
 
 }

@@ -39,7 +39,7 @@ class SetFragment : Fragment() {
     private fun getToolbar(view: View) {
         toolbar = view.findViewById(R.id.toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_back)
-        toolbar.title = "Pick Sets"
+        toolbar.title = "Choose question set"
         toolbar.setTitleTextColor(resources.getColor(R.color.white))
         view.findViewById<Toolbar>(R.id.toolbar).setOnClickListener {
             findNavController().navigate(R.id.action_setFragment_to_SecondFragment)

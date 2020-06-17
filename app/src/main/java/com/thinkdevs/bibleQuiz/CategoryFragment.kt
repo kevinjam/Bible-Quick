@@ -1,6 +1,7 @@
 package com.thinkdevs.bibleQuiz
 
 import android.app.ActionBar
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
@@ -21,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.thinkdevs.bibleQuiz.adapter.CategoryAdapter
 import com.thinkdevs.bibleQuiz.model.Category
+import com.thinkdevs.bibleQuiz.utility.LoadingDialog
 import com.thinkdevs.bibleQuiz.utility.loadAds
 
 /**
@@ -33,9 +35,9 @@ class CategoryFragment : Fragment() {
     private var reference = database.reference
     private var categoryList: ArrayList<Category>?= null
     private var adapter:CategoryAdapter?= null
-    private var loading:Dialog?= null
     private lateinit var mAdView:AdView
     private lateinit var toolbar: Toolbar
+    private var dialog:LoadingDialog?= null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,12 +52,9 @@ class CategoryFragment : Fragment() {
         mAdView= view.findViewById(R.id.adView)
 
         loadAds(view,mAdView)
-        loading = Dialog(activity!!)
-        loading!!.setContentView(R.layout.loading)
-        loading!!.window!!.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT,
-        LinearLayout.LayoutParams.WRAP_CONTENT)
-        loading!!.setCancelable(false)
-        loading!!.show()
+        dialog = LoadingDialog(activity!!)
+
+        dialog!!.startLoadingDialog()
 
         recyclerView = view.findViewById(R.id.recycler_view)
         getToolbar(view)
@@ -93,12 +92,12 @@ class CategoryFragment : Fragment() {
                         categoryList!!.add(model!!)
                     }
                     adapter!!.notifyDataSetChanged()
-                    loading!!.dismiss()
+                    dialog!!.dismissDialog()
 
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-             loading!!.dismiss()
+                    dialog!!.dismissDialog()
                 }
 
 

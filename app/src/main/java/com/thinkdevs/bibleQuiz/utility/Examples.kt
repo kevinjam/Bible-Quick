@@ -1,5 +1,8 @@
 package com.thinkdevs.bibleQuiz.utility
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -52,3 +55,13 @@ fun mColors() = arrayOf(
     "ECEFF1", "CFD8DC", "B0BBC5", "90A4AE", "78909C", "607D8B", "546E7A",  //blue grey
     "455A64", "37474F", "263238"
 )
+
+fun shareWithFriend(context: Context) {
+    val message = "https://play.google.com/store/apps/details?id=${context.packageName}"
+    val share = Intent(Intent.ACTION_SEND)
+    share.type = "text/plain"
+    share.putExtra(Intent.EXTRA_TITLE, "Bible Quiz")
+    share.putExtra(Intent.EXTRA_TEXT, "Hey, check Bible Quiz App=" + " "
+            + Uri.parse(message))
+    context.startActivity(Intent.createChooser(share, "Share with : "))
+}
