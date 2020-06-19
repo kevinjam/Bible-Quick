@@ -10,6 +10,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdRequest
@@ -37,18 +38,18 @@ class FirstFragment : Fragment() {
         dialog = LoadingDialog(activity!!)
         loadAds(view)
 
-        view.findViewById<ImageView>(R.id.start_btn).setOnClickListener {
+        view.findViewById<CardView>(R.id.start_btn).setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
 
-        view.findViewById<ImageView>(R.id.bookmarks_btn).setOnClickListener {
+        view.findViewById<CardView>(R.id.bookmarks_btn).setOnClickListener {
             findNavController().navigate(R.id.bookmarkFragment)
         }
-        view.findViewById<ImageView>(R.id.share).setOnClickListener {
+        view.findViewById<CardView>(R.id.share).setOnClickListener {
             shareWithFriend(activity!!.applicationContext)
         }
 
-        view.findViewById<ImageView>(R.id.about_us).setOnClickListener {
+        view.findViewById<CardView>(R.id.about_us).setOnClickListener {
             showCustomDialog()
 
         }
