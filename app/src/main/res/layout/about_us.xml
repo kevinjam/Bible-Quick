@@ -6,7 +6,8 @@
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="@dimen/space5"
     app:cardElevation="3dp"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    android:layout_margin="@dimen/space20">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,7 +62,7 @@
                     android:text="@string/app_name"
                     android:gravity="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/grey_20"
+                    android:textColor="@android:color/black"
                     android:textStyle="bold" />
 
                 <TextView
@@ -73,7 +74,8 @@
 We are the Foundation for the Advancement of Religion Online, a non-profit organization based in the Uganda"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@android:color/black"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    />
 
             </LinearLayout>
 
@@ -82,42 +84,25 @@ We are the Foundation for the Advancement of Religion Online, a non-profit organ
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/space15"
-                android:autoLink="web"
-                android:text="God bless you"
+                android:text="Support us"
                 android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:textColor="@color/gray_txt" />
+                android:textColor="@color/gray_txt"
+                android:textStyle="italic"/>
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_rate"
-            style="@style/Widget.AppCompat.Button.Borderless"
+            android:id="@+id/btn_donate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="RATE THIS APP"
+            android:autoLink="web"
+            android:text="@string/donate_txt"
             android:textColor="@android:color/white"
-            app:fontFamily="sans-serif-medium" />
-
-        <LinearLayout
-            android:id="@+id/btn_donate"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/space50"
-            android:background="@color/grey_20"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/donate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Donate"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                android:textColor="@android:color/black"
-                app:fontFamily="sans-serif-medium" />
-
-        </LinearLayout>
+            app:fontFamily="sans-serif-medium"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="@dimen/space20"/>
 
     </LinearLayout>
 

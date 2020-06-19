@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizApp"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:name=".utility.App">
 <!--        <activity android:name=".introduction.IntroActivity"></activity>-->
         <activity android:name=".main.MainActivity" />
         <activity

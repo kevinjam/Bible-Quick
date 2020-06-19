@@ -9,22 +9,24 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.thinkdevs.bibleQuiz.R
+import com.thinkdevs.bibleQuiz.SetFragment
 
 class SetAdapter(
     var set: Int?,
     var category: String?,
+    var type: String?,
     var navfragment: Fragment
 ) : BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        var view: View
-        if (convertView == null) {
-            view = LayoutInflater.from(parent?.context).inflate(
+        val view: View
+        view = if (convertView == null) {
+            LayoutInflater.from(parent?.context).inflate(
                 R.layout.set_items,
                 parent, false
             )
         } else {
-            view = convertView
+            convertView
         }
 
         view.setOnClickListener {
@@ -39,6 +41,7 @@ class SetAdapter(
                 .navigate(R.id.questionFragment, bundle)
         }
         view.findViewById<TextView>(R.id.content).text = (position + 1).toString()
+        view.findViewById<TextView>(R.id.tv_desc).text = type
 
         return view
     }

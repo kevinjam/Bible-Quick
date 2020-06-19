@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.thinkdevs.bibleQuiz.model.Question
+import com.thinkdevs.bibleQuiz.utility.LoadingDialog
 import com.thinkdevs.bibleQuiz.utility.loadAds
 
 
@@ -64,6 +65,8 @@ class QuestionFragment : Fragment() {
     private lateinit var dialog: Dialog
     private lateinit var timer: TextView
     private var countDown: CountDownTimer? = null
+    private var loadingDialog: LoadingDialog? = null
+    private var optionContainer:LinearLayout?= null
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -77,11 +80,15 @@ class QuestionFragment : Fragment() {
         editor = preference?.edit()
         gson = Gson()
         category = arguments?.getString("category")
-        setNo = arguments?.getInt("setNo",1)
+        setNo = arguments?.getInt("setNo")
+
+        loadingDialog = LoadingDialog(activity!!)
+        loadingDialog!!.startLoadingDialog()
 
         mAdView = view.findViewById(R.id.adView)
         loadAds(view, mAdView)
 
+        optionContainer = view.findViewById(R.id.option_container)
         question = view.findViewById(R.id.questions)
         timer = view.findViewById(R.id.counting_txt)
         indicator = view.findViewById(R.id.no_indicator)
@@ -90,6 +97,7 @@ class QuestionFragment : Fragment() {
         share = view.findViewById(R.id.share_btn)
         next = view.findViewById(R.id.next_btn)
 
+        optionContainer!!.visibility = View.GONE
         questionList = ArrayList<Question>()
         getBookmarks()
         getQuestions()
@@ -242,10 +250,12 @@ class QuestionFragment : Fragment() {
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     println("++++++Data is here " + dataSnapshot.value.toString())
+                    loadingDialog!!.dismissDialog()
+                    optionContainer!!.visibility = View.VISIBLE
+
                     for (question in dataSnapshot.children) {
                         val model = question.getValue(Question::class.java)
                         questionList!!.add(model!!)
-                        println("CATEGORY +++++++++ " + model)
                     }
                     if (questionList!!.size > 0) {
                         for (i in 0..3) {
@@ -263,7 +273,6 @@ class QuestionFragment : Fragment() {
                         Toast.makeText(activity, "no questions ", Toast.LENGTH_SHORT).show()
                     }
 
-                    println("Data is here " + questionList)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -282,9 +291,6 @@ class QuestionFragment : Fragment() {
         position++
         enableOption(true)
         if (position == questionList!!.size) {
-            println("Bundle is " + score)
-            println("Bundle is " + questionList!!.count())
-
             finishDialog(score, questionList!!.count())
 
             return true

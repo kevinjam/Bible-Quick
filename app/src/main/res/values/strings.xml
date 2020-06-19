@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QuizApp</string>
+    <string name="app_name">Bible Quiz</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -16,6 +16,9 @@
     <string name="sets">Sets</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="smart_banner">ca-app-pub-8831705983843599/1617100433</string>
-    <string name="skip">Skip</string>>
+    <string name="skip">Skip</string>
+    <string name="no_bookmarks_found">No Bookmarks found</string>
+    <string name="categories_txt">Categories</string>
+    <string name="donate_txt">Buy me a Coffee</string>>
 
 </resources>

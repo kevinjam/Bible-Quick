@@ -58,9 +58,11 @@ class CategoryAdapter(
             itemView.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString("title", items.name)
+                bundle.putString("type", items.type)
                 bundle.putInt("sets", items.set!!)
                 categoryFragment!!.findNavController().navigate(R.id.setFragment, bundle)
-//
+//                categoryFragment!!.findNavController().navigate(R.id.questionFragment, bundle)
+
             }
         }
 

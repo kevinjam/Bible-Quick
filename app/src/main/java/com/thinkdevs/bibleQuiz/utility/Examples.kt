@@ -7,7 +7,8 @@ import android.view.View
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 
-
+const val categories ="categories"
+const val donateUrl="https://ko-fi.com/R5R1BX7C"
 fun loadAds(view: View, mAdView:AdView) {
     val request = AdRequest
         .Builder()

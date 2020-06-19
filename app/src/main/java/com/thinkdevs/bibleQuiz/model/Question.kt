@@ -6,7 +6,7 @@ class Question (var question:String?=null,
                 var optionC:String?=null,
                 var optionD:String?=null,
                 var correctAns:String?=null,
-                var setNo:Int=0
+                var setNo:String?=null
 ){
     override fun toString(): String {
         return "Question(question=$question," +

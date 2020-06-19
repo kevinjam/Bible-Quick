@@ -80,6 +80,7 @@
                             tools:layout_editor_absoluteY="33dp" />
 
                         <TextView
+                            android:visibility="gone"
                             android:id="@+id/counting_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

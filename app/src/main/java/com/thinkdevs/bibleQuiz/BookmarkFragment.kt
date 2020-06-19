@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdView
@@ -24,6 +25,7 @@ import com.thinkdevs.bibleQuiz.utility.loadAds
 class BookmarkFragment : Fragment() {
 
     private var recyclerView: RecyclerView? = null
+    private var isEmpty: RelativeLayout? = null
 
     private var preference: SharedPreferences? = null
     private var editor: SharedPreferences.Editor? = null
@@ -52,12 +54,22 @@ class BookmarkFragment : Fragment() {
         getBookmarks()
 
         recyclerView = view.findViewById(R.id.bookmark_recycler)
+        isEmpty = view.findViewById(R.id.lyt_nothing_found)
         val layoutManager = LinearLayoutManager(activity)
         layoutManager.orientation = RecyclerView.VERTICAL
         recyclerView?.layoutManager = layoutManager
 
-        val adapter = BookmarkAdapter(bookmarkList!!)
-        recyclerView?.adapter = adapter
+        if(bookmarkList!!.count() != 0){
+            recyclerView!!.visibility = View.VISIBLE
+            isEmpty?.visibility = View.GONE
+            val adapter = BookmarkAdapter(bookmarkList!!)
+            recyclerView?.adapter = adapter
+        }else{
+            recyclerView!!.visibility = View.GONE
+            isEmpty?.visibility = View.VISIBLE
+        }
+
+
         return view
     }
 
@@ -73,7 +85,7 @@ class BookmarkFragment : Fragment() {
 
     private fun getBookmarks() {
         var json = preference!!.getString(KEY_NAME, "")
-        val type = object : TypeToken<List<Question>>() {}.getType()
+        val type = object : TypeToken<List<Question>>() {}.type
         bookmarkList = gson!!.fromJson(json, type)
 
         if (bookmarkList == null) {

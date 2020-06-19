@@ -9,14 +9,14 @@
     <include
         layout="@layout/toolbar"/>
     <GridView
-        android:layout_margin="@dimen/space20"
         android:id="@+id/gridview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:columnWidth="120dp"
         android:numColumns="auto_fit"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:padding="@dimen/space5"/>
 
     <include layout="@layout/ads_banner"/>
 

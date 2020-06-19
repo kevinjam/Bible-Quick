@@ -25,13 +25,15 @@ class SetFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_set, container, false)
-        var title = arguments?.getString("title")
-        var sets = arguments?.getInt("sets")
+        val title = arguments?.getString("title")
+        val type = arguments?.getString("type")
+        val sets = arguments?.getInt("sets")
+
         mAdView = view.findViewById(R.id.adView)
         loadAds( view,mAdView)
         getToolbar(view)
         gridview = view.findViewById(R.id.gridview)
-        var adapter = SetAdapter(sets!!, title,this)
+        val adapter = SetAdapter(sets!!, title,type,this)
         gridview?.adapter = adapter
         return view
     }
@@ -39,7 +41,7 @@ class SetFragment : Fragment() {
     private fun getToolbar(view: View) {
         toolbar = view.findViewById(R.id.toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_back)
-        toolbar.title = "Choose question set"
+        toolbar.title = "Choose Question set"
         toolbar.setTitleTextColor(resources.getColor(R.color.white))
         view.findViewById<Toolbar>(R.id.toolbar).setOnClickListener {
             findNavController().navigate(R.id.action_setFragment_to_SecondFragment)

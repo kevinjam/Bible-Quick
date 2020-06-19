@@ -21,6 +21,8 @@
         android:layout_weight="1"
         tools:listitem="@layout/item_bookmarks"/>
 
+<include
+    layout="@layout/is_empty_layout"/>
 
     <include layout="@layout/ads_banner"/>
 </LinearLayout>
