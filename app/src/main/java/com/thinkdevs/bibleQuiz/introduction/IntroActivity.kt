@@ -10,6 +10,7 @@ import android.view.animation.Animation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.thinkdevs.bibleQuiz.R
 import com.thinkdevs.bibleQuiz.adapter.IntroViewPagerAdapter
 import com.thinkdevs.bibleQuiz.databinding.ActivityIntroBinding
@@ -21,6 +22,9 @@ class IntroActivity : AppCompatActivity() {
     private var binding: ActivityIntroBinding? = null
     var position = 0
     var btnAnim: Animation? = null
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,6 +40,7 @@ class IntroActivity : AppCompatActivity() {
             finish()
         }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
 
         val mList: MutableList<ScreenItem> = ArrayList()
@@ -69,6 +74,7 @@ class IntroActivity : AppCompatActivity() {
 
         binding!!.tabIndicator.setupWithViewPager(binding?.screenViewpager)
         binding!!.btnNext.setOnClickListener {
+            statisticFCM("click_btn_next")
             position = binding?.screenViewpager!!.currentItem
             if (position < mList.count()) {
 
@@ -96,6 +102,9 @@ class IntroActivity : AppCompatActivity() {
         })
 
         binding!!.btnGetStarted.setOnClickListener {
+            statisticFCM("click_btn_start")
+
+
             val mainActivity = Intent(applicationContext, MainActivity::class.java)
             startActivity(mainActivity)
             savePrefsData()
@@ -103,8 +112,15 @@ class IntroActivity : AppCompatActivity() {
         }
 
         binding!!.tvSkip.setOnClickListener {
+            statisticFCM("click_btn_skip")
             binding?.screenViewpager!!.currentItem = mList.count()
         }
+    }
+
+    private fun statisticFCM(ItemNme: String) {
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, ItemNme)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
     }
 
     private fun restorePrefData(): Boolean {

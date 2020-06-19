@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.thinkdevs.bibleQuiz.utility.LoadingDialog
 import com.thinkdevs.bibleQuiz.utility.donateUrl
 import com.thinkdevs.bibleQuiz.utility.shareWithFriend
@@ -25,11 +26,14 @@ class FirstFragment : Fragment() {
 
     private lateinit var mAdView: AdView
     private var dialog: LoadingDialog? = null
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        firebaseAnalytics = FirebaseAnalytics.getInstance(activity!!)
         return inflater.inflate(R.layout.fragment_first, container, false)
     }
 
@@ -39,17 +43,21 @@ class FirstFragment : Fragment() {
         loadAds(view)
 
         view.findViewById<CardView>(R.id.start_btn).setOnClickListener {
+            statisticFCM("start_card")
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
 
         view.findViewById<CardView>(R.id.bookmarks_btn).setOnClickListener {
+            statisticFCM("bookmark_card")
             findNavController().navigate(R.id.bookmarkFragment)
         }
         view.findViewById<CardView>(R.id.share).setOnClickListener {
+            statisticFCM("share_card")
             shareWithFriend(activity!!.applicationContext)
         }
 
         view.findViewById<CardView>(R.id.about_us).setOnClickListener {
+            statisticFCM("about_us_card")
             showCustomDialog()
 
         }
@@ -88,11 +96,13 @@ class FirstFragment : Fragment() {
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
 
         dialog.findViewById<ImageView>(R.id.bt_close).setOnClickListener {
+            statisticFCM("btn_dialog_close")
             dialog.dismiss()
         }
         dialog.findViewById<Button>(R.id.btn_donate).setOnClickListener {
             dialog.dismiss()
             openDonate()
+            statisticFCM("btn_dialog_donate")
         }
 
         dialog.show()
@@ -107,4 +117,11 @@ class FirstFragment : Fragment() {
         i.data = Uri.parse(url)
         startActivity(i)
     }
+
+    private fun statisticFCM(ItemNme: String) {
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, ItemNme)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+    }
+
 }
